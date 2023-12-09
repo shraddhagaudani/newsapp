@@ -14,21 +14,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  NewsModel? alldata;
+  late Future<NewsModel?> alldata;
 
   @override
   void initState() {
-    
+    alldata = APIHelper.apiHelper.fetchdata(NewsCategory: "");
     super.initState();
-    fetchdata();
+    // fetchdata();
   }
   
-  String category = 'sports';
-  
-  fetchdata()async{
-    alldata = await APIHelper.apiHelper.fetchdata(NewsCategory: "$category");
-    print(alldata);
-  }
+  // String category = 'sports';
+  //
+  // fetchdata()async{
+  //   alldata = await APIHelper.apiHelper.fetchdata(NewsCategory: "$category");
+  //   print(alldata);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,8 @@ class _HomePageState extends State<HomePage> {
         title: Text("Homepage"),
       ),
       body: FutureBuilder(
-          future: APIHelper.apiHelper.fetchdata(NewsCategory: category),
+          future: alldata,
+
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("${snapshot.error}");
